@@ -13,7 +13,7 @@ namespace TrainingProject.Controllers
         [HttpGet]
         public string Index()
         {
-            return "Код ответа - 200";
+            return "Код ответа - 300";
         }
     }
 }
