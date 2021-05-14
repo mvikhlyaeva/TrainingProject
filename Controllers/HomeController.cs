@@ -6,14 +6,19 @@ using System.Threading.Tasks;
 
 namespace TrainingProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
-    public class HealthcheckController : ControllerBase
+    public class HealthcheckController : Controller
     {
-        [HttpGet]
+        [HttpGet("Ind")]
         public string Index()
         {
             return "Код ответа - 300";
+        }
+        [HttpGet("Ind1")]
+        public string Index1()
+        {
+            return "Код ответа - 400";
         }
     }
 }
