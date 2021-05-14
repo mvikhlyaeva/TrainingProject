@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Reflection;
 using System.IO;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
+using MediatR;
 
 namespace TrainingProject
 {
@@ -21,6 +23,18 @@ namespace TrainingProject
             services.AddControllers();
 
             services.AddSwaggerGen();
+
+            // Auto Mapper Configurations
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddMvc();
+            services.AddMediatR(typeof(Startup));
 
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -40,19 +54,14 @@ namespace TrainingProject
 
             app.UseRouting();
 
-            /*
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-            */
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Healthcheck}/{action=Index}");
-            });
-
+            
+            
+            
         }
     }
 }
