@@ -12,6 +12,7 @@ using System.IO;
 using Microsoft.OpenApi.Models;
 using AutoMapper;
 using MediatR;
+using TrainingProject.tables;
 
 namespace TrainingProject
 {
@@ -36,6 +37,14 @@ namespace TrainingProject
             services.AddMvc();
             services.AddMediatR(typeof(Startup));
 
+
+            /*var connectionString = Configuration["PostgreSql:ConnectionString"];
+            var dbPassword = Configuration["PostgreSql:DbPassword"];
+            var builder = new NpgsqlConnectionStringBuilder(connectionString)
+            {
+                Password = dbPassword
+            };
+            services.AddDbContext<CellsAppContext>(options => options.UseNpgsql(builder.ConnectionString));*/
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
