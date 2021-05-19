@@ -13,25 +13,53 @@ namespace TrainingProject.Controllers
     public class HealthcheckController : Controller
     {
         [HttpGet("Ind")]
-        public Cells Index()
+        public Cell Index()
         {
-            //Cells c1 = new Cells();
-            using (CellsAppContext db = new CellsAppContext())
+            using (ApplicationContext db = new ApplicationContext())
             {
-                Cells c1 = new Cells() { Id = 3, Code="qw23", Position=2 };
+                Cell c1 = new Cell() { Id = 11, Code="qw23", Position=2 };
                 db.cells.Add(c1);
                 db.SaveChanges();
 
                 var c2 = db.cells.ToList();
-                Cells res = c2[0];
+                Cell res = c2[1];
                 return res;
             }
         }
         
-        [HttpGet("Ind1")]
-        public string Index1()
+        [HttpGet("TestDb1")]
+        public string TestDb1()
         {
-            return "Код ответа - 400";
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                StoreDepartment SD = new StoreDepartment { DepartmentId = 3, StoreId = 5, Scheme = SchemeType.OnlyBack };
+                Stand Stand1 = new Stand { Id = 10, Size = 2, DepartmentId = 3, StoreId = 5 };
+                Cell Cell1 = new Cell { Id = 222, Code = "q123", StandId = 10 };
+                db.storeDepartments.AddRange(SD);
+                db.stands.AddRange(Stand1);
+                db.cells.Add(Cell1);
+                db.SaveChanges();
+                var Cell2 = db.cells.ToList();
+                return ($"Id = {Cell2[0].Id}, StandId = {Cell2[0].Stand.Id}, DepartmentId = {Cell2[0].Stand.StoreDepartment.DepartmentId} ");
+                
+            }
         }
+
+
+        [HttpGet("TestDb")]
+        public string TestDb()
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                StoreDepartment SD = new StoreDepartment { DepartmentId = 3, StoreId = 5, Scheme = SchemeType.OnlyBack };
+                Stand Stand1 = new Stand { Id = 10, Size = 2, DepartmentId = 3, StoreId = 5 };
+                db.storeDepartments.AddRange(SD);
+                db.stands.AddRange(Stand1);
+                db.SaveChanges();
+                var Stand2 = db.stands.ToList();
+                return ($"Id = {Stand2[0].Id}, DepartmentId = {Stand2[0].StoreDepartment.DepartmentId}");
+            }
+        }
+        
     }
 }

@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 
 namespace TrainingProject.tables
 {
-    public class Products
+    public class Product
     {
-        public Guid Id { get; set; }
-        public Guid Cellid { get; set; }
+        public int Id { get; set; }
+
+        public int Cellid { get; set; }
+        public Cell Cell { get; set; }
+
         public string ProductCode { get; set; }
         public decimal Quantity { get; set; }
         public DateTime UpdateDate { get; set; }

@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace TrainingProject.tables
 {
-    public class Stands
+    public class Stand
     {
+
         public int Id { get; set; }
         public string Code { get; set; }
         public int Size { get; set; }
@@ -14,5 +15,9 @@ namespace TrainingProject.tables
         public int Side { get; set; }
         public int StoreId { get; set; }
         public int DepartmentId { get; set; }
+
+        public StoreDepartment StoreDepartment { get; set; }
+
+        public List<Cell> Cells { get; set; }
     }
 }
