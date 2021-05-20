@@ -13,6 +13,7 @@ namespace TrainingProject.Controllers
 
     [Route("api")]
     [ApiController]
+    [Produces("application/json")]
     public class StoreDepartmentController : Controller
     {
         private readonly ApplicationContext _context;
@@ -42,7 +43,6 @@ namespace TrainingProject.Controllers
             if (StoreDepartment != null)
             {
                 StoreDepartment.Scheme = scheme;
-                _context.storeDepartments.Update(StoreDepartment);
                 await _context.SaveChangesAsync();
                 return Ok(StoreDepartment.Scheme);
             }
