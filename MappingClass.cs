@@ -1,30 +1,20 @@
-﻿using System;
+﻿using AutoMapper;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+using TrainingProject.DomainModels;
+using TrainingProject.tables;
 
 namespace TrainingProject
 {
-    public class User
-    {
-        public string Name { get; set; }
-        public int Age { get; set; }
-    }
-
-    public class UserDto
-    {
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public int Id { get; set; }
-    }
     public class MappingProfile : Profile
     {
         public MappingProfile()
         {
-            // Add as many of these lines as you need to map your objects
-            CreateMap<User, UserDto>();
-            CreateMap<UserDto, User>();
+            CreateMap<StoreDepartment, StoreDepartmentDomainModel>();
+            CreateMap<StoreDepartmentDomainModel, StoreDepartment>();
+            CreateMap< Stand, StandDomainModel >();
+            CreateMap<StandDomainModel, Stand>();
+            CreateMap<List <StandDomainModel>,List<Stand>>();
+            CreateMap<List<Stand>, List<StandDomainModel>>();
         }
     }
 }

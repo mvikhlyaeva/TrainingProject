@@ -23,23 +23,8 @@ namespace TrainingProject.tables
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /*modelBuilder.Entity<StoreDepartment>().HasKey(u => new { u.StoreId, u.DepartmentId });
-            modelBuilder.Entity<Stand>().HasKey(u => u.Id);
-            modelBuilder.Entity<Cell>().HasKey(u => u.Id);
-            modelBuilder.Entity<Product>().HasKey(u => u.Id);
-            modelBuilder.Entity<Stand>()
-                .HasOne(u => u.StoreDepartment)
-                .WithMany(t => t.Stands)
-                .HasForeignKey(u => new { u.StoreId, u.DepartmentId });
-            modelBuilder.Entity<Cell>()
-                .HasOne(u => u.Stand)
-                .WithMany(t => t.Cells)
-                .HasForeignKey(u => u.StandId);
-            modelBuilder.Entity<Product>()
-                .HasOne(u => u.Cell)
-                .WithMany(t => t.Products)
-                .HasForeignKey(u => u.Cellid);
-            */
+
+
             modelBuilder.ApplyConfiguration(new StoreDepartmentConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new StandConfiguration());

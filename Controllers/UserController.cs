@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 
-namespace TrainingProject.Controllers
+/*namespace TrainingProject.Controllers
 {
     [Route("api/mapper")]
     [ApiController]
@@ -16,7 +16,7 @@ namespace TrainingProject.Controllers
         private readonly IMapper _mapper;
 
         // Assign the object in the constructor for dependency injection
-       
+
         public UserController(IMapper mapper)
         {
             _mapper = mapper;
@@ -24,7 +24,7 @@ namespace TrainingProject.Controllers
         [HttpGet("user")]
         public UserDto UseMap(string name, int age)
         {
-           User user = new User
+            User user = new User
             {
                 Name = name,
                 Age = age
@@ -33,6 +33,6 @@ namespace TrainingProject.Controllers
             return man;
         }
 
-        
+
     }
-}
+}*/

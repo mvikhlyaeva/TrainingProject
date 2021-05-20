@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace TrainingProject.tables
 {
-    public class StandConfiguration: IEntityTypeConfiguration<Stand>
+    public class StandConfiguration : IEntityTypeConfiguration<Stand>
     {
         public void Configure(EntityTypeBuilder<Stand> builder)
         {

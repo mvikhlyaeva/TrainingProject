@@ -1,17 +1,10 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Reflection;
-using System.IO;
-using Microsoft.OpenApi.Models;
-using AutoMapper;
-using MediatR;
 using TrainingProject.tables;
 
 namespace TrainingProject
@@ -20,33 +13,32 @@ namespace TrainingProject
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationContext>(options => options
+                .UseNpgsql("Host=localhost;Port=5433;Database=usersdb;Username=postgres;Password=Qwert6789",
+                    builder => builder.MigrationsAssembly(typeof(ApplicationContext).Assembly.GetName().Name))); //Πετλεκρθÿ
 
-            services.AddControllers();
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddSwaggerGen();
 
-            // Auto Mapper Configurations
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
-            IMapper mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper);
+            // Auto Mapper Configurations
+            /* var mapperConfig = new MapperConfiguration(mc =>
+             {
+                 mc.AddProfile(new MappingProfile());
+             });
+
+             IMapper mapper = mapperConfig.CreateMapper();
+             services.AddSingleton(mapper);*/
 
             services.AddMvc();
             services.AddMediatR(typeof(Startup));
 
-
-            /*var connectionString = Configuration["PostgreSql:ConnectionString"];
-            var dbPassword = Configuration["PostgreSql:DbPassword"];
-            var builder = new NpgsqlConnectionStringBuilder(connectionString)
-            {
-                Password = dbPassword
-            };
-            services.AddDbContext<CellsAppContext>(options => options.UseNpgsql(builder.ConnectionString));*/
         }
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationContext context)
         {
             if (env.IsDevelopment())
             {
@@ -63,14 +55,19 @@ namespace TrainingProject
 
             app.UseRouting();
 
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-            
-            
-            
+
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
+
+
+
         }
     }
 }
