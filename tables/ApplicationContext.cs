@@ -13,15 +13,17 @@ namespace TrainingProject.tables
         public DbSet<Product> products { get; set; }
         public DbSet<Stand> stands { get; set; }
         public DbSet<StoreDepartment> storeDepartments { get; set; }
-        public ApplicationContext()
+        /*public ApplicationContext()
         {
             Database.EnsureDeleted();
             Database.EnsureCreated();
-        }
+        }*/
+
+        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<StoreDepartment>().HasKey(u => new { u.StoreId, u.DepartmentId });
+            /*modelBuilder.Entity<StoreDepartment>().HasKey(u => new { u.StoreId, u.DepartmentId });
             modelBuilder.Entity<Stand>().HasKey(u => u.Id);
             modelBuilder.Entity<Cell>().HasKey(u => u.Id);
             modelBuilder.Entity<Product>().HasKey(u => u.Id);
@@ -37,11 +39,17 @@ namespace TrainingProject.tables
                 .HasOne(u => u.Cell)
                 .WithMany(t => t.Products)
                 .HasForeignKey(u => u.Cellid);
+            */
+            modelBuilder.ApplyConfiguration(new StoreDepartmentConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new StandConfiguration());
+            modelBuilder.ApplyConfiguration(new CellConfiguration());
 
+            base.OnModelCreating(modelBuilder);
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=usersdb;Username=postgres;Password=Qwert6789");
-        }
+        }*/
     }
 }

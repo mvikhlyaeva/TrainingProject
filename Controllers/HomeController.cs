@@ -8,6 +8,7 @@ using TrainingProject.tables;
 
 namespace TrainingProject.Controllers
 {
+    
     [Route("api")]
     [ApiController]
     public class HealthcheckController : Controller
@@ -15,7 +16,11 @@ namespace TrainingProject.Controllers
         [HttpGet("Ind")]
         public Cell Index()
         {
-            using (ApplicationContext db = new ApplicationContext())
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
+            var options = optionsBuilder
+                .UseNpgsql("Host=localhost;Port=5433;Database=usersdb;Username=postgres;Password=Qwert6789")
+                .Options;
+            using (ApplicationContext db = new ApplicationContext(options))
             {
                 Cell c1 = new Cell() { Id = 11, Code="qw23", Position=2 };
                 db.cells.Add(c1);
@@ -30,17 +35,22 @@ namespace TrainingProject.Controllers
         [HttpGet("TestDb1")]
         public string TestDb1()
         {
-            using (ApplicationContext db = new ApplicationContext())
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
+            var options = optionsBuilder
+                .UseNpgsql("Host=localhost;Port=5433;Database=usersdb;Username=postgres;Password=Qwert6789")
+                .Options;
+            using (ApplicationContext db = new ApplicationContext(options))
             {
-                StoreDepartment SD = new StoreDepartment { DepartmentId = 3, StoreId = 5, Scheme = SchemeType.OnlyBack };
-                Stand Stand1 = new Stand { Id = 10, Size = 2, DepartmentId = 3, StoreId = 5 };
-                Cell Cell1 = new Cell { Id = 222, Code = "q123", StandId = 10 };
+                StoreDepartment SD = new StoreDepartment { DepartmentId = 10, StoreId = 15, Scheme = SchemeType.OnlyBack };
+                Stand Stand1 = new Stand { Id = 20, Size = 2, DepartmentId = 10, StoreId = 15 };
+                Cell Cell1 = new Cell { Id = 888, Code = "q123", StandId = 20 };
                 db.storeDepartments.AddRange(SD);
                 db.stands.AddRange(Stand1);
                 db.cells.Add(Cell1);
                 db.SaveChanges();
                 var Cell2 = db.cells.ToList();
-                return ($"Id = {Cell2[0].Id}, StandId = {Cell2[0].Stand.Id}, DepartmentId = {Cell2[0].Stand.StoreDepartment.DepartmentId} ");
+                int len = Cell2.Count-1;
+                return ($"Id = {Cell2[len]?.Id}, StandId = {Cell2[len]?.Stand.Id}, DepartmentId = {Cell2[len]?.Stand?.StoreDepartment?.DepartmentId} ");
                 
             }
         }
@@ -49,15 +59,20 @@ namespace TrainingProject.Controllers
         [HttpGet("TestDb")]
         public string TestDb()
         {
-            using (ApplicationContext db = new ApplicationContext())
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
+            var options = optionsBuilder
+                .UseNpgsql("Host=localhost;Port=5433;Database=usersdb;Username=postgres;Password=Qwert6789")
+                .Options;
+            using (ApplicationContext db = new ApplicationContext(options))
             {
-                StoreDepartment SD = new StoreDepartment { DepartmentId = 3, StoreId = 5, Scheme = SchemeType.OnlyBack };
-                Stand Stand1 = new Stand { Id = 10, Size = 2, DepartmentId = 3, StoreId = 5 };
+                StoreDepartment SD = new StoreDepartment { DepartmentId = 7, StoreId = 8, Scheme = SchemeType.OnlyBack };
+                Stand Stand1 = new Stand { Id = 15, Size = 2, DepartmentId = 7, StoreId = 8 };
                 db.storeDepartments.AddRange(SD);
                 db.stands.AddRange(Stand1);
                 db.SaveChanges();
                 var Stand2 = db.stands.ToList();
-                return ($"Id = {Stand2[0].Id}, DepartmentId = {Stand2[0].StoreDepartment.DepartmentId}");
+                int len = Stand2.Count-1;
+                return ($"Id = {Stand2[len].Id}, DepartmentId = {Stand2[len].StoreDepartment.DepartmentId}");
             }
         }
         
