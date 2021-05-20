@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TrainingProject.DomainModels;
+using TrainingProject.Application.Queries.StoreDepartments.GetStpreDepartment;
+using TrainingProject.Core;
+using TrainingProject.Domain;
 using TrainingProject.tables;
 
 namespace TrainingProject.Controllers
@@ -18,11 +21,13 @@ namespace TrainingProject.Controllers
     {
         private readonly ApplicationContext _context;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public StoreDepartmentController(ApplicationContext context, IMapper mapper)
+        public StoreDepartmentController(ApplicationContext context, IMapper mapper, IMediator mediator)
         {
             _context = context;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         [HttpPost("StoreDeparments")]
@@ -51,13 +56,9 @@ namespace TrainingProject.Controllers
 
 
         [HttpGet("store/{storeId}/department/{departmentId}")]
-        public async Task<IActionResult> GetStoreDepartments(int storeId, int departmentId, CancellationToken cancellationToken)
+        public async Task<StoreDepartmentDomainModel> GetStoreDepartments(int storeId, int departmentId, CancellationToken cancellationToken)
         {
-
-            var StoreDepartment = await _context.storeDepartments.FirstOrDefaultAsync(sd => sd.StoreId == storeId && sd.DepartmentId == departmentId);
-            if (StoreDepartment != null) return Ok(_mapper.Map<StoreDepartmentDomainModel>(StoreDepartment));
-            else return NotFound();
-
+            return await _mediator.Send(new GetStoreDepartmentQuery(storeId, departmentId), cancellationToken);
         }
 
         [HttpDelete("store/{storeId}/department/{departmentId}")]

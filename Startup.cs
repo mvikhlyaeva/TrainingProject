@@ -5,7 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using TrainingProject.Core.Middlwares;
 using TrainingProject.tables;
+
 
 namespace TrainingProject
 {
@@ -53,6 +55,8 @@ namespace TrainingProject
                 c.RoutePrefix = string.Empty;
             });
 
+            app.UseMiddleware<ExceptionCatchMiddleware>();
+
             app.UseRouting();
 
 
@@ -66,7 +70,7 @@ namespace TrainingProject
                 context.Database.Migrate();
             }
 
-
+            
 
         }
     }

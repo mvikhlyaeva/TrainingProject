@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TrainingProject.DomainModels;
+using TrainingProject.Domain;
 using TrainingProject.tables;
 
 namespace TrainingProject.Controllers
@@ -34,9 +34,9 @@ namespace TrainingProject.Controllers
             return Ok(Stand);
         }
 
-        [HttpPost("stands.storeId={storeId}&departmentId={departmentId}")]
+        [HttpPost("stands")]
         [ProducesResponseType(typeof(StandDomainModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetStands(int storeId, int departmentId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetStands([FromQuery] int storeId, [FromQuery] int departmentId, CancellationToken cancellationToken)
         {
             var stands = await _context.stands.ToListAsync(cancellationToken);
             var resStands = stands.Where(st => st.StoreId == storeId && st.DepartmentId == departmentId);
