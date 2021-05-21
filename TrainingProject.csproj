@@ -20,6 +20,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Training.Infrastructure\Training.Infrastructure.csproj" />
+    <ProjectReference Include="..\TrainingProject.Core\TrainingProject.Core.csproj" />
+    <ProjectReference Include="..\TrainProject.DomainModels\TrainProject.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Application\Commands\" />
   </ItemGroup>
 
 </Project>

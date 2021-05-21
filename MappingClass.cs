@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using System.Collections.Generic;
-using TrainingProject.DomainModels;
+using TrainingProject.Domain;
 using TrainingProject.tables;
 
 namespace TrainingProject

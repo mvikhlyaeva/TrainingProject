@@ -8,7 +8,7 @@ using TrainingProject.tables;
 using System.Threading;
 using Microsoft.AspNetCore.Http;
 using AutoMapper;
-using TrainingProject.DomainModels;
+
 
 namespace TrainingProject.Controllers
 {
