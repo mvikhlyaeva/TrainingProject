@@ -1,13 +1,9 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TrainingProject.Domain;
 
-namespace TrainingProject.Application.Queries.StoreDepartments.GetStpreDepartment
+namespace TrainingProject.Application.Queries.StoreDepartments.GetStoreDepartment
 {
-    public class GetStoreDepartmentQuery: IRequest<StoreDepartmentDomainModel>
+    public class GetStoreDepartmentQuery : IRequest<StoreDepartmentDomainModel>
     {
         public int StoreId { get; set; }
         public int DepartmentId { get; set; }

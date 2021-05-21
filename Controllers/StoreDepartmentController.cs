@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TrainingProject.Application.Queries.StoreDepartments.GetStpreDepartment;
+using TrainingProject.Application.Queries.StoreDepartments.DeleteStoreDepartment;
+using TrainingProject.Application.Queries.StoreDepartments.GetStoreDepartment;
+using TrainingProject.Application.Queries.StoreDepartments.PatchStoreDepartment;
+using TrainingProject.Application.Queries.StoreDepartments.PostStoreDepartment;
 using TrainingProject.Core;
 using TrainingProject.Domain;
 using TrainingProject.tables;
@@ -31,27 +31,15 @@ namespace TrainingProject.Controllers
         }
 
         [HttpPost("StoreDeparments")]
-        [ProducesResponseType(typeof(StoreDepartmentDomainModel), StatusCodes.Status200OK)]
-        public async Task<IActionResult> AddStoreDepartments([FromBody] StoreDepartmentDomainModel SD, CancellationToken cancellationToken)
+        public async Task<StoreDepartmentDomainModel> AddStoreDepartments([FromBody] StoreDepartmentDomainModel SD, CancellationToken cancellationToken)
         {
-
-            _context.storeDepartments.Add(_mapper.Map<StoreDepartment>(SD));
-            await _context.SaveChangesAsync(cancellationToken);
-            return Ok(SD);
+            return await _mediator.Send(new PostStoreDepartmentQuery(SD), cancellationToken);
         }
 
         [HttpPatch("store/{storeId}/department/{departmentId}")]
-        //[ProducesResponseType(typeof(StoreDepartmentDomainModel.Scheme), StatusCodes.Status200OK)]
-        public async Task<IActionResult> ChangeStoreDepartments(int storeId, int departmentId, SchemeType scheme, CancellationToken cancellationToken)
+        public async Task<SchemeType> ChangeStoreDepartments(int storeId, int departmentId, SchemeType scheme, CancellationToken cancellationToken)
         {
-            var StoreDepartment = await _context.storeDepartments.FirstOrDefaultAsync(sd => sd.StoreId == storeId && sd.DepartmentId == departmentId);
-            if (StoreDepartment != null)
-            {
-                StoreDepartment.Scheme = scheme;
-                await _context.SaveChangesAsync();
-                return Ok(StoreDepartment.Scheme);
-            }
-            else return NotFound();
+            return await _mediator.Send(new PatchStoreDepartmentQuery(storeId, departmentId, scheme), cancellationToken);
         }
 
 
@@ -62,19 +50,9 @@ namespace TrainingProject.Controllers
         }
 
         [HttpDelete("store/{storeId}/department/{departmentId}")]
-        [ProducesResponseType(typeof(StoreDepartment), StatusCodes.Status200OK)]
-        public async Task<IActionResult> DeleteStoreDepartments(int storeId, int departmentId, CancellationToken cancellationToken)
+        public async Task<StoreDepartmentDomainModel> DeleteStoreDepartments(int storeId, int departmentId, CancellationToken cancellationToken)
         {
-
-            var StoreDepartment = await _context.storeDepartments.FirstOrDefaultAsync(sd => sd.StoreId == storeId && sd.DepartmentId == departmentId);
-            if (StoreDepartment != null) {
-                _context.storeDepartments.Remove(StoreDepartment);
-                await _context.SaveChangesAsync();
-                return Ok(StoreDepartment);
-
-            } 
-            else return NotFound();
-
+            return await _mediator.Send(new DeleteStoreDepartmentQuery(storeId, departmentId), cancellationToken);
         }
 
     }
